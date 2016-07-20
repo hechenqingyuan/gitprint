@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page Width="200" Heigth="700" DefaultPrinter="ZDesigner GX420d">
+  <Line Height="100">
+    <Text Left="2" Top="2" FontSize="7"></Text>
+  </Line>
+  <Line Height="50">
+    <Image Left="10" Top="1" Width="180" Heigth="38">{{Logo}}</Image>
+  </Line>
+  <Line Height="100">
+    <QRCode Left="30" Top="2" >{{OrderCode}}</QRCode>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">单据号:{{OrderCode}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">提货日期:{{DtReceive}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">航班号:{{StrComment}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">提货点:{{ReceiveAddress}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">联系人:{{ReceiveUser}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">联系电话:{{ReceiverPhone}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">时间:{{DtCreate}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="2" Top="2" FontSize="12">--------------------------</Text>
+  </Line>
+  <Line Height="27">
+    <Text Left="4" Top="2" FontSize="7">序号</Text>
+    <Text Left="30" Top="2" FontSize="7">货号</Text>
+    <Text Left="70" Top="2" FontSize="7">品名</Text>
+    <Text Left="30" Top="17" FontSize="7">数量</Text>
+    <Text Left="70" Top="17" FontSize="7">单价</Text>
+    <Text Left="150" Top="17" FontSize="7">金额</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="2" Top="2" FontSize="12">--------------------------</Text>
+  </Line>
+
+  <Loop Values="Detials">
+    <Line Height="30">
+      <Text Left="4" Top="2" FontSize="7">{{Index}}</Text>
+      <Text Left="30" Top="2" FontSize="7">{{StrID}}</Text>
+      <Text Left="70" Top="2" FontSize="6">{{StrName}}</Text>
+
+      <Text Left="30" Top="17" FontSize="7">{{DCount}}</Text>
+      <Text Left="60" Top="17" FontSize="7">*</Text>
+      <Text Left="70" Top="17" FontSize="7">{{DPrice}}</Text>
+      <Text Left="140" Top="17" FontSize="7">=</Text>
+      <Text Left="150" Top="17" FontSize="7">{{DAmount}}</Text>
+    </Line>
+  </Loop>
+
+  <Line Height="15">
+    <Text Left="2" Top="2" FontSize="12">--------------------------</Text>
+  </Line>
+
+  <Line Height="15">
+    <Text Left="2" Top="2" FontSize="8">联机刷卡</Text>
+    <Text Left="100" Top="2" FontSize="8">人民币{{DAmount}}</Text>
+  </Line>
+
+  <Line Height="15">
+    <Text Left="2" Top="2" FontSize="12">--------------------------</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="2" Top="2" FontSize="8">商品数:{{DCount}}</Text>
+    <Text Left="80" Top="2" FontSize="8">总金额:{{DAmount}}</Text>
+  </Line>
+  <Line Height="70">
+    <BarCode Left="20" Top="2" Width="100" Height="60">{{OrderCode}}</BarCode>
+  </Line>
+  <Line Height="20">
+    <Text Left="2" Top="2" FontSize="12">--------------------------</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="5" FontSize="7">谢谢惠顾,欢迎再次光临</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="5" FontSize="7">提货凭据，请妥善保管</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="5" FontSize="7">客服热线:4001051212</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="2" Top="2" FontSize="7"></Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="2" Top="2" FontSize="7"></Text>
+  </Line>
+</Page>

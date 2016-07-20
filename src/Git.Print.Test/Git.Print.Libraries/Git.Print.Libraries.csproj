@@ -60,14 +60,15 @@
     <Compile Include="ZplCommand.cs" />
     <Compile Include="ZPLPrint.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Template\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fnthex32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\Template.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

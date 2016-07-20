@@ -52,13 +52,9 @@ namespace Git.Print.Libraries
         /// </summary>
         private XDocument root;
 
-        public DocumentPrint()
-        {
-        }
-
         public DocumentPrint(string filePath, string printName, bool isAutoHeigth, Dictionary<string, object> dataSource)
         {
-            this.FilePath = FilePath;
+            this.FilePath = filePath;
             this.PrintName = printName;
             this.IsAutoHeight = isAutoHeigth;
             this.DataSource = dataSource;
@@ -116,7 +112,7 @@ namespace Git.Print.Libraries
                     if (item.Name == "Line")
                     {
                         XAttribute attribute = item.Attribute("Height");
-                        if (attribute != null && string.IsNullOrWhiteSpace(attribute.Value))
+                        if (attribute != null && !string.IsNullOrWhiteSpace(attribute.Value))
                         {
                             float LineHeigth = string.IsNullOrWhiteSpace(item.Attribute("Height").Value) ? 0 : Convert.ToSingle(item.Attribute("Height").Value);
                             PageHeith += LineHeigth;
@@ -333,9 +329,9 @@ namespace Git.Print.Libraries
                                     ActionBarCode(child, dicRow);
                                 }
                             }
+                            totalHeight += LineHeigth;
+                            rowIndex++;
                         }
-                        totalHeight += LineHeigth;
-                        rowIndex++;
                     }
                 }
             }

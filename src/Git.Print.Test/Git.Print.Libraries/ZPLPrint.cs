@@ -27,10 +27,6 @@ namespace Git.Print.Libraries
         /// </summary>
         private Dictionary<string, object> DataSource { get; set; }
 
-        public ZPLPrint()
-        {
-        }
-
         public ZPLPrint(string filePath,string comName,bool isAutoHeight,Dictionary<string,object> dataSource)
         {
             this.FilePath = filePath;
