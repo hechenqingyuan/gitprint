@@ -57,6 +57,7 @@
     <Compile Include="IPrint.cs" />
     <Compile Include="JsonDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZPLPrint.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Template\" />

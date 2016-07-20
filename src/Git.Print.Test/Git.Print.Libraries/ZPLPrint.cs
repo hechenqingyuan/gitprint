@@ -47,5 +47,20 @@ namespace Git.Print.Libraries
             JsonDataSource convert = new JsonDataSource();
             this.DataSource = convert.To(dataSource);
         }
+
+        public IPrint Init()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPrint Print()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPrint PrintFile(string fileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
