@@ -86,6 +86,32 @@ namespace Git.Print.Libraries
         }
 
         /// <summary>  
+        /// 中文处理,返回ZPL命令  
+        /// </summary>  
+        /// <param name="ChineseText">待转变中文内容</param>  
+        /// <param name="FontName">字体名称</param>  
+        /// <param name="startX">X坐标</param>  
+        /// <param name="startY">Y坐标</param>  
+        /// <param name="Orient">旋转角度0,90,180,270</param>  
+        /// <param name="Height">字体高度</param>  
+        /// <param name="Width">字体宽度，通常是0</param>  
+        /// <param name="IsBold">1 变粗,0 正常</param>  
+        /// <param name="IsItalic">1 斜体,0 正常</param>  
+        /// <returns></returns>  
+        public string ZPL_CHText(string ChineseText, string FontName, int startX, int startY, int Orient, int Height, int Width, int IsBold, int IsItalic)
+        {
+            StringBuilder sResult = new StringBuilder();
+            StringBuilder hexbuf = new StringBuilder(21 * 1024);
+            int count = ZplCommand.GETFONTHEX(ChineseText, FontName, Orient, Height, Width, IsBold, IsItalic, hexbuf);
+            if (count > 0)
+            {
+                string sEnd = "^FO" + startX.ToString() + "," + startY.ToString() + "^XGOUTSTR" + ",1,2^FS ";
+                sResult.AppendLine(hexbuf.ToString().Replace("OUTSTR01", "OUTSTR") + sEnd);
+            }
+            return sResult.ToString();
+        }
+
+        /// <summary>  
         /// 中文处理  
         /// </summary>  
         /// <param name="ChineseText">待转变中文内容</param>  
@@ -146,6 +172,12 @@ namespace Git.Print.Libraries
             sb.Append("^BQ,2,7");
             sb.AppendFormat("^FDLA,{0}^FS", Conent);
             return sb.ToString();
+        }
+
+
+        public string ZPL_Image(int Left, int Top, int cl, int bch, string path)
+        {
+            return string.Empty;
         }
     }
 }

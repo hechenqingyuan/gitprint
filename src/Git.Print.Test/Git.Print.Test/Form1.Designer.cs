@@ -33,6 +33,7 @@
             this.btnDocumentFile = new System.Windows.Forms.Button();
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
+            this.btnZPL = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnDocumentDic
@@ -80,11 +81,22 @@
             this.btnSelectFile.Text = "选择文件";
             this.btnSelectFile.UseVisualStyleBackColor = true;
             // 
+            // btnZPL
+            // 
+            this.btnZPL.Location = new System.Drawing.Point(12, 152);
+            this.btnZPL.Name = "btnZPL";
+            this.btnZPL.Size = new System.Drawing.Size(138, 34);
+            this.btnZPL.TabIndex = 5;
+            this.btnZPL.Text = "ZPL打印(数据源)";
+            this.btnZPL.UseVisualStyleBackColor = true;
+            this.btnZPL.Click += new System.EventHandler(this.btnZPL_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(658, 417);
+            this.Controls.Add(this.btnZPL);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.txtFilePath);
             this.Controls.Add(this.btnDocumentFile);
@@ -108,6 +120,7 @@
         private System.Windows.Forms.Button btnDocumentFile;
         private System.Windows.Forms.TextBox txtFilePath;
         private System.Windows.Forms.Button btnSelectFile;
+        private System.Windows.Forms.Button btnZPL;
     }
 }
 

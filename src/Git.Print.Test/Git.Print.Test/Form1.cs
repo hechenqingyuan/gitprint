@@ -62,5 +62,18 @@ namespace Git.Print.Test
         {
 
         }
+
+        /// <summary>
+        /// ZPL打印
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnZPL_Click(object sender, EventArgs e)
+        {
+            string tempalte = System.AppDomain.CurrentDomain.BaseDirectory + "\\Template\\Template.xml";
+            Dictionary<string, object> dic = GetDataSource();
+            IPrint instance = new ZPLPrint(tempalte, "COM2", true, dic);
+            instance.Init().Print();
+        }
     }
 }
