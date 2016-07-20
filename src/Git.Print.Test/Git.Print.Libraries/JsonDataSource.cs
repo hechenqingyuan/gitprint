@@ -10,9 +10,9 @@ namespace Git.Print.Libraries
         public JsonDataSource() { }
 
 
-        public Dictionary<string,string> To(string json)
+        public Dictionary<string,object> To(string json)
         {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
+            Dictionary<string, object> dic = new Dictionary<string, object>();
 
             return dic;
         }

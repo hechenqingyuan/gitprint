@@ -334,6 +334,8 @@ namespace Git.Print.Libraries
                                 }
                             }
                         }
+                        totalHeight += LineHeigth;
+                        rowIndex++;
                     }
                 }
             }
@@ -346,7 +348,6 @@ namespace Git.Print.Libraries
         public IPrint Print()
         {
             this.printDocument.Print(); //触发打印
-
             return this;
         }
 
@@ -357,6 +358,23 @@ namespace Git.Print.Libraries
         /// <returns></returns>
         public IPrint PrintFile(string fileName)
         {
+            if (!File.Exists(fileName))
+            {
+                throw new Exception("打印文件不存在");
+            }
+            this.DataSource = new Dictionary<string, object>();
+            string line = string.Empty;
+            using (StreamReader reader = new StreamReader(fileName, Encoding.Default))
+            {
+                List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+                while ((line = reader.ReadLine()) != null)
+                {
+                    Dictionary<string, object> dic = new Dictionary<string, object>();
+                    dic.Add("Line", line);
+                    list.Add(dic);
+                }
+                this.DataSource.Add("List", list);
+            }
             this.printDocument.Print(); //触发打印
             return this;
         }
