@@ -57,6 +57,7 @@
     <Compile Include="IPrint.cs" />
     <Compile Include="JsonDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZplCommand.cs" />
     <Compile Include="ZPLPrint.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Fnthex32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
