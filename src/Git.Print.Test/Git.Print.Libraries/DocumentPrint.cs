@@ -150,6 +150,15 @@ namespace Git.Print.Libraries
             float totalHeight = 0;
             int rowIndex = 0;
 
+            Action<XElement, Dictionary<string, object>> ActionLine = (el, row) =>
+            {
+                float StartX= string.IsNullOrWhiteSpace(el.Attribute("StartX").Value) ? 0 : Convert.ToSingle(el.Attribute("StartX").Value);
+                float StartY = string.IsNullOrWhiteSpace(el.Attribute("StartY").Value) ? 0 : Convert.ToSingle(el.Attribute("StartY").Value);
+                float EndX = string.IsNullOrWhiteSpace(el.Attribute("EndX").Value) ? 0 : Convert.ToSingle(el.Attribute("EndX").Value);
+                float EndY = string.IsNullOrWhiteSpace(el.Attribute("EndY").Value) ? 0 : Convert.ToSingle(el.Attribute("EndY").Value);
+                g.DrawLine(new Pen(bru), StartX, StartX, EndX, EndY);
+            };
+
             Action<XElement, Dictionary<string, object>> ActionText = (el, row) =>
             {
                 float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
@@ -196,15 +205,18 @@ namespace Git.Print.Libraries
                     int beginIndex = content.IndexOf("{{");
                     int endIndex = content.LastIndexOf("}}");
                     string key = content.Substring(beginIndex + 2, endIndex - beginIndex - 2);
-                    Image image = Image.FromFile(row[key].ToString());
+                    if (row[key]!=null && File.Exists(row[key].ToString()))
+                    {
+                        Image image = Image.FromFile(row[key].ToString());
 
-                    if (Width == 0 || Heigth == 0)
-                    {
-                        g.DrawImage(image, new PointF(Left, Top));
-                    }
-                    else
-                    {
-                        g.DrawImage(image, Left, Top, Width, Heigth);
+                        if (Width == 0 || Heigth == 0)
+                        {
+                            g.DrawImage(image, new PointF(Left, Top));
+                        }
+                        else
+                        {
+                            g.DrawImage(image, Left, Top, Width, Heigth);
+                        }
                     }
                 }
             };
@@ -272,6 +284,8 @@ namespace Git.Print.Libraries
                 g.DrawImage(bitmap, new PointF(Left, Top));
             };
 
+            
+
             foreach (XElement item in root.Element("Page").Elements())
             {
                 if (item.Name == "Line")
@@ -294,6 +308,10 @@ namespace Git.Print.Libraries
                         else if (child.Name == "BarCode")
                         {
                             ActionBarCode(child, this.DataSource);
+                        }
+                        else if (child.Name == "StrLine")
+                        {
+                            ActionLine(child,this.DataSource);
                         }
                     }
                     totalHeight += LineHeigth;

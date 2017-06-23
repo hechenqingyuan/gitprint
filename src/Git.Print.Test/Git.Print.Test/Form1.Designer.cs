@@ -80,6 +80,7 @@
             this.btnSelectFile.TabIndex = 4;
             this.btnSelectFile.Text = "选择文件";
             this.btnSelectFile.UseVisualStyleBackColor = true;
+            this.btnSelectFile.Click += new System.EventHandler(this.btnSelectFile_Click);
             // 
             // btnZPL
             // 

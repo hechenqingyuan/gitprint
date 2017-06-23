@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Page Width="200" Heigth="700" DefaultPrinter="ZDesigner GX420d">
+<Page Width="200" Heigth="700" DefaultPrinter="Microsoft XPS Document Writer">
   <Line Height="100">
     <Text Left="2" Top="2" FontSize="7"></Text>
   </Line>
+  
+  <Line Height="50">
+    <StrLine StartX="10" StartY="1" EndX="180" EndY="38"></StrLine>
+  </Line>
+  
   <Line Height="50">
     <Image Left="10" Top="1" Width="180" Heigth="38">{{Logo}}</Image>
   </Line>

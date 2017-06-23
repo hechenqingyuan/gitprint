@@ -75,5 +75,10 @@ namespace Git.Print.Test
             IPrint instance = new ZPLPrint(tempalte, "COM2", true, dic);
             instance.Init().Print();
         }
+
+        private void btnSelectFile_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
