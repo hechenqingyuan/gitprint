@@ -156,7 +156,7 @@ namespace Git.Print.Libraries
                 float StartY = string.IsNullOrWhiteSpace(el.Attribute("StartY").Value) ? 0 : Convert.ToSingle(el.Attribute("StartY").Value);
                 float EndX = string.IsNullOrWhiteSpace(el.Attribute("EndX").Value) ? 0 : Convert.ToSingle(el.Attribute("EndX").Value);
                 float EndY = string.IsNullOrWhiteSpace(el.Attribute("EndY").Value) ? 0 : Convert.ToSingle(el.Attribute("EndY").Value);
-                g.DrawLine(new Pen(bru), StartX, StartX, EndX, EndY);
+                g.DrawLine(new Pen(bru), StartX, StartY, EndX, EndY);
             };
 
             Action<XElement, Dictionary<string, object>> ActionText = (el, row) =>
