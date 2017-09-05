@@ -5,7 +5,7 @@
   </Line>
   
   <Line Height="50">
-    <StrLine StartX="10" StartY="1" EndX="180" EndY="38"></StrLine>
+    <StrLine StartX="10" StartY="1" EndX="180" EndY="1"></StrLine>
   </Line>
   
   <Line Height="50">
@@ -63,6 +63,12 @@
       <Text Left="150" Top="17" FontSize="7">{{DAmount}}</Text>
     </Line>
   </Loop>
+
+  <Table Values="Detials" BorderWidth="1" Width="280">
+    <Tr Height="30" AutoHeight="true">
+      <Td Title="序号" Width="30" TitleFontSize="7" ContentFontSize="6" PaddingTop="1" PaddingLeft="1">{{Index}}</Td>
+    </Tr>
+  </Table>
 
   <Line Height="15">
     <Text Left="2" Top="2" FontSize="12">--------------------------</Text>

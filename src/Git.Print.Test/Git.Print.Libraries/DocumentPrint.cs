@@ -182,6 +182,29 @@ namespace Git.Print.Libraries
                 }
             };
 
+            Action<XElement, Dictionary<string, object>> ActionTd = (el, row) =>
+            {
+                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
+                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
+                float FontSize = string.IsNullOrWhiteSpace(el.Attribute("FontSize").Value) ? 0 : Convert.ToSingle(el.Attribute("FontSize").Value);
+                string FontName = el.Attribute("FontName") != null ? el.Attribute("FontName").Value : "";
+                FontName = string.IsNullOrWhiteSpace(FontName) ? "宋体" : FontName;
+
+                Top = totalHeight + Top;
+                string content = el.Value;
+                if (content.Contains("{{") && content.Contains("}}"))
+                {
+                    int beginIndex = content.IndexOf("{{");
+                    int endIndex = content.LastIndexOf("}}");
+                    string key = content.Substring(beginIndex + 2, endIndex - beginIndex - 2);
+                    g.DrawString(content.Replace("{{" + key + "}}", row[key].ToString()), new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
+                }
+                else
+                {
+                    g.DrawString(content, new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
+                }
+            };
+
             Action<XElement, Dictionary<string, object>> ActionImage = (el, row) =>
             {
                 float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
@@ -311,7 +334,7 @@ namespace Git.Print.Libraries
                         }
                         else if (child.Name == "StrLine")
                         {
-                            ActionLine(child,this.DataSource);
+                            ActionLine(child, this.DataSource);
                         }
                     }
                     totalHeight += LineHeigth;
@@ -348,6 +371,49 @@ namespace Git.Print.Libraries
                                 }
                             }
                             totalHeight += LineHeigth;
+                            rowIndex++;
+                        }
+                    }
+                }
+                else if (item.Name == "Table")
+                {
+                    string Values = item.Attribute("Values").Value;
+                    List<Dictionary<string, object>> listValues = this.DataSource[Values] as List<Dictionary<string, object>>;
+                    if (listValues != null)
+                    {
+                        XElement TrItem = item.Element("Tr");
+                        float TrHeigth = string.IsNullOrWhiteSpace(TrItem.Attribute("Height").Value) ? 0 : Convert.ToSingle(TrItem.Attribute("Height").Value);
+
+                        string AttrAutoHeight= TrItem.Attribute("AutoHeight").Value;
+                        bool AutoHeight = !string.IsNullOrWhiteSpace(AttrAutoHeight) && AttrAutoHeight.ToLower() == "true" ? true : false;
+
+                        for (int i = 0; i < listValues.Count(); i++)
+                        {
+                            Dictionary<string, object> dicRow = listValues[i];
+                            foreach (XElement child in TrItem.Elements())
+                            {
+                                if (child.Name == "Text")
+                                {
+                                    ActionText(child, dicRow);
+                                }
+                                else if (child.Name == "Image")
+                                {
+                                    ActionImage(child, dicRow);
+                                }
+                                else if (child.Name == "QRCode")
+                                {
+                                    ActionQRCode(child, dicRow);
+                                }
+                                else if (child.Name == "BarCode")
+                                {
+                                    ActionBarCode(child, dicRow);
+                                }
+                                else if (child.Name == "Td")
+                                {
+                                    ActionTd(child,dicRow);
+                                }
+                            }
+                            totalHeight += TrHeigth;
                             rowIndex++;
                         }
                     }
