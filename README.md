@@ -39,3 +39,5 @@ http://yun.gitwms.com/
 更多案例请联系我
 
 
+<img src="http://yun.gitwms.com/Weixin.jpg" width="350" height="500" alt=""/>
+<img src="http://yun.gitwms.com/Alipay.jpg" width="350" height="500" alt=""/>
