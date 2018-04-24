@@ -64,7 +64,7 @@
     </Line>
   </Loop>
 
-  <!--<Table Values="Detials" BorderWidth="1" Width="280">
+  <!--<Table Values="Detials" BorderWidth="1" Width="280"> 
     <Tr Height="30" AutoHeight="true">
       <Td Title="序号" Width="30" TitleFontSize="7" ContentFontSize="6" PaddingTop="1" PaddingLeft="1">{{Index}}</Td>
     </Tr>
