@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{94F698DF-9660-4BCB-A876-1277019B2C13}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{51A17A72-BC2C-4AD4-A465-C5B79503191E}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Git.Print.Test</RootNamespace>
-    <AssemblyName>Git.Print.Test</AssemblyName>
+    <RootNamespace>Git.Framework.Printer</RootNamespace>
+    <AssemblyName>Git.Framework.Printer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,9 +20,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,60 +31,52 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Git.Framework.DataTypes, Version=2.0.6453.28238, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Git.Framework.DataTypes">
       <HintPath>..\Lib\Git.Framework.DataTypes.dll</HintPath>
     </Reference>
-    <Reference Include="Git.Framework.Events">
-      <HintPath>..\Lib\Git.Framework.Events.dll</HintPath>
+    <Reference Include="Git.Framework.Io">
+      <HintPath>..\Lib\Git.Framework.Io.dll</HintPath>
+    </Reference>
+    <Reference Include="Git.Framework.Log">
+      <HintPath>..\Lib\Git.Framework.Log.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="DocumentPrint.cs" />
+    <Compile Include="IPrint.cs" />
+    <Compile Include="Pager\BarCodeEntity.cs" />
+    <Compile Include="Pager\ContentEntity.cs" />
+    <Compile Include="Pager\ERowType.cs" />
+    <Compile Include="Pager\ImageEntity.cs" />
+    <Compile Include="Pager\LineEntity.cs" />
+    <Compile Include="Pager\LoopEntity.cs" />
+    <Compile Include="Pager\PageEntity.cs" />
+    <Compile Include="Pager\QRCodeEntity.cs" />
+    <Compile Include="Pager\RowEntity.cs" />
+    <Compile Include="Pager\StrLineEntity.cs" />
+    <Compile Include="Pager\TableEntity.cs" />
+    <Compile Include="Pager\TdEntity.cs" />
+    <Compile Include="Pager\TextEntity.cs" />
+    <Compile Include="Pager\TrEntity.cs" />
+    <Compile Include="PageXmlReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    <Compile Include="XmlElementExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Git.Print.Libraries\Git.Print.Libraries.csproj">
-      <Project>{8c4a2801-24ce-4668-8f44-b94e808a16cf}</Project>
-      <Name>Git.Print.Libraries</Name>
-    </ProjectReference>
+    <Content Include="Fnthex32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\Template.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

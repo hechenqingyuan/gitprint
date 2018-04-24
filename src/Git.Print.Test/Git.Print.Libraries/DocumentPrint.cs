@@ -1,5 +1,7 @@
 ﻿using Gma.QrCodeNet.Encoding;
 using Gma.QrCodeNet.Encoding.Windows.Render;
+using Git.Framework.DataTypes;
+using Git.Framework.DataTypes.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -97,11 +99,11 @@ namespace Git.Print.Libraries
             }
             this.root = XDocument.Load(this.FilePath);
 
-            string strWidth = root.Element("Page").Attribute("Width").Value;
-            string strHeigth = root.Element("Page").Attribute("Heigth").Value;
+            string strWidth = root.Element("Page").Attribute("Width").Value();
+            string strHeigth = root.Element("Page").Attribute("Heigth").Value();
             strWidth = string.IsNullOrWhiteSpace(strWidth) ? "0" : strWidth;
             strHeigth = string.IsNullOrWhiteSpace(strHeigth) ? "0" : strHeigth;
-            string DefaultPrinter = root.Element("Page").Attribute("DefaultPrinter").Value;
+            string DefaultPrinter = root.Element("Page").Attribute("DefaultPrinter").Value();
 
             //计算文档高度
             if (this.IsAutoHeight)
@@ -112,21 +114,21 @@ namespace Git.Print.Libraries
                     if (item.Name == "Line")
                     {
                         XAttribute attribute = item.Attribute("Height");
-                        if (attribute != null && !string.IsNullOrWhiteSpace(attribute.Value))
+                        if (attribute != null && !string.IsNullOrWhiteSpace(attribute.Value()))
                         {
-                            float LineHeigth = string.IsNullOrWhiteSpace(item.Attribute("Height").Value) ? 0 : Convert.ToSingle(item.Attribute("Height").Value);
+                            float LineHeigth = string.IsNullOrWhiteSpace(item.Attribute("Height").Value()) ? 0 : Convert.ToSingle(item.Attribute("Height").Value());
                             PageHeith += LineHeigth;
                         }
                     }
                     else if (item.Name == "Loop")
                     {
-                        string Values = item.Attribute("Values").Value;
+                        string Values = item.Attribute("Values").Value();
                         List<Dictionary<string, object>> listValues = null;
                         listValues = this.DataSource[Values] as List<Dictionary<string, object>>;
                         if (listValues != null)
                         {
                             XElement lineItem = item.Element("Line");
-                            float LineHeigth = string.IsNullOrWhiteSpace(lineItem.Attribute("Height").Value) ? 0 : Convert.ToSingle(lineItem.Attribute("Height").Value);
+                            float LineHeigth = string.IsNullOrWhiteSpace(lineItem.Attribute("Height").Value()) ? 0 : Convert.ToSingle(lineItem.Attribute("Height").Value());
                             PageHeith += LineHeigth * listValues.Count();
                         }
                     }
@@ -152,21 +154,22 @@ namespace Git.Print.Libraries
 
             Action<XElement, Dictionary<string, object>> ActionLine = (el, row) =>
             {
-                float StartX= string.IsNullOrWhiteSpace(el.Attribute("StartX").Value) ? 0 : Convert.ToSingle(el.Attribute("StartX").Value);
-                float StartY = string.IsNullOrWhiteSpace(el.Attribute("StartY").Value) ? 0 : Convert.ToSingle(el.Attribute("StartY").Value);
-                float EndX = string.IsNullOrWhiteSpace(el.Attribute("EndX").Value) ? 0 : Convert.ToSingle(el.Attribute("EndX").Value);
-                float EndY = string.IsNullOrWhiteSpace(el.Attribute("EndY").Value) ? 0 : Convert.ToSingle(el.Attribute("EndY").Value);
+                float StartX= string.IsNullOrWhiteSpace(el.Attribute("StartX").Value()) ? 0 : Convert.ToSingle(el.Attribute("StartX").Value());
+                float StartY = string.IsNullOrWhiteSpace(el.Attribute("StartY").Value()) ? 0 : Convert.ToSingle(el.Attribute("StartY").Value());
+                float EndX = string.IsNullOrWhiteSpace(el.Attribute("EndX").Value()) ? 0 : Convert.ToSingle(el.Attribute("EndX").Value());
+                float EndY = string.IsNullOrWhiteSpace(el.Attribute("EndY").Value()) ? 0 : Convert.ToSingle(el.Attribute("EndY").Value());
                 g.DrawLine(new Pen(bru), StartX, StartY, EndX, EndY);
             };
 
             Action<XElement, Dictionary<string, object>> ActionText = (el, row) =>
             {
-                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
-                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
-                float FontSize = string.IsNullOrWhiteSpace(el.Attribute("FontSize").Value) ? 0 : Convert.ToSingle(el.Attribute("FontSize").Value);
-                string FontName = el.Attribute("FontName") != null ? el.Attribute("FontName").Value : "";
-
+                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value()) ? 0 : Convert.ToSingle(el.Attribute("Left").Value());
+                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value()) ? 0 : Convert.ToSingle(el.Attribute("Top").Value());
+                float FontSize = string.IsNullOrWhiteSpace(el.Attribute("FontSize").Value()) ? 0 : Convert.ToSingle(el.Attribute("FontSize").Value());
+                string FontName = el.Attribute("FontName") != null ? el.Attribute("FontName").Value() : "";
                 FontName = string.IsNullOrWhiteSpace(FontName) ? "宋体" : FontName;
+                int Start = ConvertHelper.ToType<int>(el.Attribute("Start").Value(), -1);
+                int End = ConvertHelper.ToType<int>(el.Attribute("End").Value(), -1);
 
                 Top = totalHeight + Top;
                 string content = el.Value;
@@ -176,6 +179,10 @@ namespace Git.Print.Libraries
                     int endIndex = content.LastIndexOf("}}");
                     string key = content.Substring(beginIndex + 2, endIndex - beginIndex - 2);
                     string Value = row[key].ToString();
+                    if(Start>-1 && End>-1 && Value.IsNotEmpty())
+                    {
+                        Value = Value.SubStr(Start,End);
+                    }
                     g.DrawString(content.Replace("{{" + key + "}}", Value), new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
                 }
                 else
@@ -186,41 +193,41 @@ namespace Git.Print.Libraries
 
             Action<XElement, Dictionary<string, object>> ActionTd = (el, row) =>
             {
-                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
-                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
-                float FontSize = string.IsNullOrWhiteSpace(el.Attribute("FontSize").Value) ? 0 : Convert.ToSingle(el.Attribute("FontSize").Value);
-                string FontName = el.Attribute("FontName") != null ? el.Attribute("FontName").Value : "";
+                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value()) ? 0 : Convert.ToSingle(el.Attribute("Left").Value());
+                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value()) ? 0 : Convert.ToSingle(el.Attribute("Top").Value());
+                float FontSize = string.IsNullOrWhiteSpace(el.Attribute("FontSize").Value()) ? 0 : Convert.ToSingle(el.Attribute("FontSize").Value());
+                string FontName = el.Attribute("FontName") != null ? el.Attribute("FontName").Value() : "";
                 FontName = string.IsNullOrWhiteSpace(FontName) ? "宋体" : FontName;
 
                 Top = totalHeight + Top;
                 string content = el.Value;
-                if (content.Contains("{{") && content.Contains("}}"))
-                {
-                    int beginIndex = content.IndexOf("{{");
-                    int endIndex = content.LastIndexOf("}}");
-                    string key = content.Substring(beginIndex + 2, endIndex - beginIndex - 2);
-                    g.DrawString(content.Replace("{{" + key + "}}", row[key].ToString()), new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
-                }
-                else
-                {
-                    g.DrawString(content, new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
-                }
+                //if (content.Contains("{{") && content.Contains("}}"))
+                //{
+                //    int beginIndex = content.IndexOf("{{");
+                //    int endIndex = content.LastIndexOf("}}");
+                //    string key = content.Substring(beginIndex + 2, endIndex - beginIndex - 2);
+                //    g.DrawString(content.Replace("{{" + key + "}}", row[key].ToString()), new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
+                //}
+                //else
+                //{
+                //    g.DrawString(content, new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
+                //}
             };
 
             Action<XElement, Dictionary<string, object>> ActionImage = (el, row) =>
             {
-                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
-                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
+                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value()) ? 0 : Convert.ToSingle(el.Attribute("Left").Value());
+                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value()) ? 0 : Convert.ToSingle(el.Attribute("Top").Value());
                 int Width = 0;
                 int Heigth = 0;
 
                 if (el.Attribute("Width") != null)
                 {
-                    Width = string.IsNullOrWhiteSpace(el.Attribute("Width").Value) ? 0 : Convert.ToInt32(el.Attribute("Width").Value);
+                    Width = string.IsNullOrWhiteSpace(el.Attribute("Width").Value()) ? 0 : Convert.ToInt32(el.Attribute("Width").Value());
                 }
                 if (el.Attribute("Heigth") != null)
                 {
-                    Heigth = string.IsNullOrWhiteSpace(el.Attribute("Heigth").Value) ? 0 : Convert.ToInt32(el.Attribute("Heigth").Value);
+                    Heigth = string.IsNullOrWhiteSpace(el.Attribute("Heigth").Value()) ? 0 : Convert.ToInt32(el.Attribute("Heigth").Value());
                 }
 
                 Top = totalHeight + Top;
@@ -249,9 +256,9 @@ namespace Git.Print.Libraries
             Action<XElement, Dictionary<string, object>> ActionQRCode = (el, row) =>
             {
                 string content = string.Empty;
-                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
-                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
-                int Size = string.IsNullOrWhiteSpace(el.Attribute("Size").Value) ? 0 : Convert.ToInt32(el.Attribute("Size").Value);
+                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value()) ? 0 : Convert.ToSingle(el.Attribute("Left").Value());
+                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value()) ? 0 : Convert.ToSingle(el.Attribute("Top").Value());
+                int Size = string.IsNullOrWhiteSpace(el.Attribute("Size").Value()) ? 0 : Convert.ToInt32(el.Attribute("Size").Value());
                 Size = Size == 0 ? 3 : Size;
                 Top = totalHeight + Top;
                 content = el.Value;
@@ -280,11 +287,11 @@ namespace Git.Print.Libraries
             {
                 string content = string.Empty;
 
-                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
-                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
+                float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value()) ? 0 : Convert.ToSingle(el.Attribute("Left").Value());
+                float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value()) ? 0 : Convert.ToSingle(el.Attribute("Top").Value());
 
-                float Width = string.IsNullOrWhiteSpace(el.Attribute("Width").Value) ? 0 : Convert.ToSingle(el.Attribute("Width").Value);
-                float Height = string.IsNullOrWhiteSpace(el.Attribute("Height").Value) ? 0 : Convert.ToSingle(el.Attribute("Height").Value);
+                float Width = string.IsNullOrWhiteSpace(el.Attribute("Width").Value()) ? 0 : Convert.ToSingle(el.Attribute("Width").Value());
+                float Height = string.IsNullOrWhiteSpace(el.Attribute("Height").Value()) ? 0 : Convert.ToSingle(el.Attribute("Height").Value());
 
                 Top = totalHeight + Top;
                 content = el.Value;
@@ -316,7 +323,7 @@ namespace Git.Print.Libraries
             {
                 if (item.Name == "Line")
                 {
-                    float LineHeigth = string.IsNullOrWhiteSpace(item.Attribute("Height").Value) ? 0 : Convert.ToSingle(item.Attribute("Height").Value);
+                    float LineHeigth = string.IsNullOrWhiteSpace(item.Attribute("Height").Value()) ? 0 : Convert.ToSingle(item.Attribute("Height").Value());
                     foreach (XElement child in item.Elements())
                     {
                         if (child.Name == "Text")
@@ -345,12 +352,12 @@ namespace Git.Print.Libraries
                 }
                 else if (item.Name == "Loop")
                 {
-                    string Values = item.Attribute("Values").Value;
+                    string Values = item.Attribute("Values").Value();
                     List<Dictionary<string, object>> listValues = this.DataSource[Values] as List<Dictionary<string, object>>;
                     if (listValues != null)
                     {
                         XElement lineItem = item.Element("Line");
-                        float LineHeigth = string.IsNullOrWhiteSpace(lineItem.Attribute("Height").Value) ? 0 : Convert.ToSingle(lineItem.Attribute("Height").Value);
+                        float LineHeigth = string.IsNullOrWhiteSpace(lineItem.Attribute("Height").Value()) ? 0 : Convert.ToSingle(lineItem.Attribute("Height").Value());
                         for (int i = 0; i < listValues.Count(); i++)
                         {
                             Dictionary<string, object> dicRow = listValues[i];
@@ -380,14 +387,14 @@ namespace Git.Print.Libraries
                 }
                 else if (item.Name == "Table")
                 {
-                    string Values = item.Attribute("Values").Value;
+                    string Values = item.Attribute("Values").Value();
                     List<Dictionary<string, object>> listValues = this.DataSource[Values] as List<Dictionary<string, object>>;
                     if (listValues != null)
                     {
                         XElement TrItem = item.Element("Tr");
-                        float TrHeigth = string.IsNullOrWhiteSpace(TrItem.Attribute("Height").Value) ? 0 : Convert.ToSingle(TrItem.Attribute("Height").Value);
+                        float TrHeigth = string.IsNullOrWhiteSpace(TrItem.Attribute("Height").Value()) ? 0 : Convert.ToSingle(TrItem.Attribute("Height").Value());
 
-                        string AttrAutoHeight= TrItem.Attribute("AutoHeight").Value;
+                        string AttrAutoHeight= TrItem.Attribute("AutoHeight").Value();
                         bool AutoHeight = !string.IsNullOrWhiteSpace(AttrAutoHeight) && AttrAutoHeight.ToLower() == "true" ? true : false;
 
                         for (int i = 0; i < listValues.Count(); i++)
