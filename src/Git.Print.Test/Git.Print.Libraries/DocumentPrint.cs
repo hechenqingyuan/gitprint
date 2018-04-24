@@ -165,6 +165,7 @@ namespace Git.Print.Libraries
                 float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
                 float FontSize = string.IsNullOrWhiteSpace(el.Attribute("FontSize").Value) ? 0 : Convert.ToSingle(el.Attribute("FontSize").Value);
                 string FontName = el.Attribute("FontName") != null ? el.Attribute("FontName").Value : "";
+
                 FontName = string.IsNullOrWhiteSpace(FontName) ? "宋体" : FontName;
 
                 Top = totalHeight + Top;
@@ -174,7 +175,8 @@ namespace Git.Print.Libraries
                     int beginIndex = content.IndexOf("{{");
                     int endIndex = content.LastIndexOf("}}");
                     string key = content.Substring(beginIndex + 2, endIndex - beginIndex - 2);
-                    g.DrawString(content.Replace("{{" + key + "}}", row[key].ToString()), new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
+                    string Value = row[key].ToString();
+                    g.DrawString(content.Replace("{{" + key + "}}", Value), new Font(FontName, FontSize, FontStyle.Regular), bru, new PointF(Left, Top));
                 }
                 else
                 {
@@ -226,7 +228,8 @@ namespace Git.Print.Libraries
                 string content = string.Empty;
                 float Left = string.IsNullOrWhiteSpace(el.Attribute("Left").Value) ? 0 : Convert.ToSingle(el.Attribute("Left").Value);
                 float Top = string.IsNullOrWhiteSpace(el.Attribute("Top").Value) ? 0 : Convert.ToSingle(el.Attribute("Top").Value);
-
+                int Size = string.IsNullOrWhiteSpace(el.Attribute("Size").Value) ? 0 : Convert.ToInt32(el.Attribute("Size").Value);
+                Size = Size == 0 ? 3 : Size;
                 Top = totalHeight + Top;
                 content = el.Value;
                 if (content.Contains("{{") && content.Contains("}}"))
@@ -243,7 +246,7 @@ namespace Git.Print.Libraries
                 qrEncoder.TryEncode(content, out qrCode);
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    GraphicsRenderer renderer = new GraphicsRenderer(new FixedModuleSize(3, QuietZoneModules.Two));
+                    GraphicsRenderer renderer = new GraphicsRenderer(new FixedModuleSize(Size, QuietZoneModules.Two));
                     renderer.WriteToStream(qrCode.Matrix, ImageFormat.Jpeg, ms);
                     Image image = Image.FromStream(ms);
                     g.DrawImage(image, new PointF(Left, Top));
