@@ -54,7 +54,8 @@
     <Line Height="30">
       <Text Left="4" Top="2" FontSize="7">{{Index}}</Text>
       <Text Left="30" Top="2" FontSize="7">{{StrID}}</Text>
-      <Text Left="70" Top="2" FontSize="6" Start="0" End="1">{{StrName}}</Text>
+      <Text Left="70" Top="2" FontSize="6" Start="0" End="2">{{StrName}}</Text>
+      <Text Left="100" Top="2" FontSize="6" Start="2" End="5">{{StrName}}</Text>
       <Text Left="30" Top="17" FontSize="7">{{DCount}}</Text>
       <Text Left="60" Top="17" FontSize="7">*</Text>
       <Text Left="70" Top="17" FontSize="7">{{DPrice}}</Text>

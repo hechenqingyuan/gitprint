@@ -20,7 +20,7 @@ namespace Git.Framework.Printer.Test
         {
             string tempalte = System.AppDomain.CurrentDomain.BaseDirectory + "\\Template\\Template.xml";
             Dictionary<string, object> dic = GetDataSource();
-            IPrint instance = new DocumentPrint(tempalte, "", true, dic);
+            IPrint instance = new DocumentPrint(tempalte, "", dic);
             instance.Init().Print();
         }
 

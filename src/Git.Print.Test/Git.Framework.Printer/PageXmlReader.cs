@@ -184,7 +184,7 @@ namespace Git.Framework.Printer
 
             float Left = Node.Value<float>("Left");
             float Top = Node.Value<float>("Top");
-            string FontSize = Node.Value("FontSize");
+            float FontSize = Node.Value<float>("FontSize");
             string FontName = Node.Value("FontName");
             int Start = Node.Value<int>("Start");
             int End = Node.Value<int>("End");
@@ -304,7 +304,7 @@ namespace Git.Framework.Printer
             float Left = Node.Value<float>("Left");
             float Top = Node.Value<float>("Top");
             float Width = Node.Value<float>("Width");
-            float Height = Node.Value<float>("Heigth");
+            float Height = Node.Value<float>("Height");
             string Content = Node.Value;
 
             if (Content.Contains("{{") && Content.Contains("}}"))

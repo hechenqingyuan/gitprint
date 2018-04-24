@@ -19,11 +19,5 @@ namespace Git.Framework.Printer
         /// <returns></returns>
         IPrint Print();
 
-        /// <summary>
-        /// 打印文件
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        IPrint PrintFile(string fileName);
     }
 }

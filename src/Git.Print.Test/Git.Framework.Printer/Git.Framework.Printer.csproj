@@ -34,11 +34,17 @@
     <Reference Include="Git.Framework.DataTypes">
       <HintPath>..\Lib\Git.Framework.DataTypes.dll</HintPath>
     </Reference>
+    <Reference Include="Git.Framework.Events">
+      <HintPath>..\Lib\Git.Framework.Events.dll</HintPath>
+    </Reference>
     <Reference Include="Git.Framework.Io">
       <HintPath>..\Lib\Git.Framework.Io.dll</HintPath>
     </Reference>
     <Reference Include="Git.Framework.Log">
       <HintPath>..\Lib\Git.Framework.Log.dll</HintPath>
+    </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding">
+      <HintPath>..\Lib\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,8 +54,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="zxing">
+      <HintPath>..\Lib\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation">
+      <HintPath>..\Lib\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSourceExtension.cs" />
     <Compile Include="DocumentPrint.cs" />
     <Compile Include="IPrint.cs" />
     <Compile Include="Pager\BarCodeEntity.cs" />

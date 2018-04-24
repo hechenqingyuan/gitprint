@@ -37,7 +37,7 @@ namespace Git.Framework.Printer.Pager
         /// <summary>
         /// 打印的字体大小
         /// </summary>
-        public string FontSize { get; set; }
+        public float FontSize { get; set; }
 
         /// <summary>
         /// 字体名称
