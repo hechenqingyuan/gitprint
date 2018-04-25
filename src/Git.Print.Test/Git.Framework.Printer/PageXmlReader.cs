@@ -92,8 +92,81 @@ namespace Git.Framework.Printer
         private TableEntity ReadTable(XElement ETable)
         {
             TableEntity Result = new TableEntity();
+            string Values = ETable.Value<string>("Values");
+            float BorderWidth = ETable.Value<float>("BorderWidth");
+            float Width = ETable.Value<float>("Width");
+            float Left = ETable.Value<float>("Left");
+            float Top = ETable.Value<float>("Top");
 
+            Result.Index = RowIndex;
+            Result.RowType = (int)ERowType.Table;
+            Result.KeyName = Values;
+            Result.BorderWidth = BorderWidth;
+            Result.Width = Width;
+            Result.Left = Left;
+            Result.Top = Top;
+            Result.Head = this.ReadTHead(ETable);
+            Result.ListTR = this.ReadTR(ETable);
             return Result;
+        }
+
+        /// <summary>
+        /// 读取表头信息
+        /// </summary>
+        /// <returns></returns>
+        private THeadEntity ReadTHead(XElement ETable)
+        {
+            THeadEntity Result = null;
+            XElement THead = ETable.Element("THead");
+            if (THead != null)
+            {
+                Result = new THeadEntity();
+                float Height = THead.Value<float>("Height");
+                Result.Height = Height;
+                Result.ListTD = this.ReadTd(THead);
+            }
+            return Result;
+        }
+
+        /// <summary>
+        /// 读取TR中的内容
+        /// </summary>
+        /// <param name="ETable"></param>
+        /// <returns></returns>
+        private List<TrEntity> ReadTR(XElement ETable)
+        {
+            List<TrEntity> listResult = new List<TrEntity>();
+            foreach (XElement TR in ETable.Elements("Tr"))
+            {
+                TrEntity entity = new TrEntity();
+                float Height = TR.Value<float>("Height");
+                entity.Height = Height;
+                entity.ListTD = this.ReadTd(TR);
+                listResult.Add(entity);
+            }
+            return listResult;
+        }
+
+        /// <summary>
+        /// 读取TD集合
+        /// </summary>
+        /// <param name="Tr"></param>
+        /// <returns></returns>
+        private List<TdEntity> ReadTd(XElement Tr)
+        {
+            List<TdEntity> listResult = new List<TdEntity>();
+            if (Tr != null)
+            {
+                foreach (XElement td in Tr.Elements("Td"))
+                {
+                    TdEntity entity = new TdEntity();
+                    float Width = td.Value<float>("Width");
+                    entity.Width = Width;
+                    entity.ListContent = this.ReadContent(td);
+                    listResult.Add(entity);
+                }
+            }
+            return listResult;
         }
 
         /// <summary>

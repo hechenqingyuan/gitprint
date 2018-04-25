@@ -78,6 +78,7 @@
     <Compile Include="Pager\TableEntity.cs" />
     <Compile Include="Pager\TdEntity.cs" />
     <Compile Include="Pager\TextEntity.cs" />
+    <Compile Include="Pager\THeadEntity.cs" />
     <Compile Include="Pager\TrEntity.cs" />
     <Compile Include="PageXmlReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -65,14 +65,14 @@
   </Loop>
 
   <Table Values="Detials" BorderWidth="1" Width="150" Left="1" Top="1">
-    <!--<THead  Height="30">
+    <THead  Height="30">
       <Td Width="30">
         <Text Left="4" Top="5" FontSize="7">序号</Text>
       </Td>
       <Td Width="120">
         <Text Left="4" Top="5" FontSize="7">名称</Text>
       </Td>
-    </THead>-->
+    </THead>
     <Tr Height="20">
       <Td Width="30">
         <Text Left="4" Top="2" FontSize="7">{{Index}}</Text>

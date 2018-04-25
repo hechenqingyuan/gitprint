@@ -110,6 +110,10 @@ namespace Git.Framework.Printer
                     else if (Row.RowType == (int)ERowType.Table)
                     {
                         TableEntity RowItem = Row as TableEntity;
+                        if (RowItem.Head != null)
+                        {
+                            PageHeight += RowItem.Head.Height;
+                        }
                         string Key = RowItem.KeyName;
                         object dataList = this.DataSource.Value<string, object>(Key);
                         if (dataList != null && dataList is List<Dictionary<string, object>>)
@@ -152,6 +156,61 @@ namespace Git.Framework.Printer
             this.bru = Brushes.Black;
             this.g = e.Graphics;
 
+            foreach (RowEntity row in this.Page.Rows.Where(item => item.RowType == (int)ERowType.Table))
+            {
+                TableEntity RowItem = row as TableEntity;
+                float TabLeft = RowItem.Left;
+
+                Action<List<TdEntity>> action = (List<TdEntity> listTD) => 
+                {
+                    float CurrentLeft = TabLeft;
+                    foreach (TdEntity Td in listTD)
+                    {
+                        if (!Td.ListContent.IsNullOrEmpty())
+                        {
+                            foreach (ContentEntity item in Td.ListContent)
+                            {
+                                if (item is StrLineEntity)
+                                {
+                                }
+                                else if (item is TextEntity)
+                                {
+                                    TextEntity Content = item as TextEntity;
+                                    Content.Left = Content.Left + CurrentLeft;
+                                }
+                                else if (item is ImageEntity)
+                                {
+                                    ImageEntity Content = item as ImageEntity;
+                                    Content.Left = Content.Left + CurrentLeft;
+                                }
+                                else if (item is QRCodeEntity)
+                                {
+                                    QRCodeEntity Content = item as QRCodeEntity;
+                                    Content.Left = Content.Left + CurrentLeft;
+                                }
+                                else if (item is BarCodeEntity)
+                                {
+                                    BarCodeEntity Content = item as BarCodeEntity;
+                                    Content.Left = Content.Left + CurrentLeft;
+                                }
+                            }
+                        }
+                        CurrentLeft = CurrentLeft + Td.Width;
+                    }
+                };
+                if (RowItem.Head != null)
+                {
+                    action(RowItem.Head.ListTD);
+                }
+                if (!RowItem.ListTR.IsNullOrEmpty())
+                {
+                    foreach (TrEntity td in RowItem.ListTR)
+                    {
+                        action(td.ListTD);
+                    }
+                }
+            }
+
             foreach (RowEntity row in this.Page.Rows)
             {
                 if (row.RowType == (int)ERowType.Line)
@@ -168,6 +227,160 @@ namespace Git.Framework.Printer
                     if (!listSource.IsNullOrEmpty())
                     {
                         this.WriteLoop(RowItem, listSource);
+                    }
+                }
+                else if (row.RowType == (int)ERowType.Table)
+                {
+                    TableEntity RowItem = row as TableEntity;
+                    string KeyName = RowItem.KeyName;
+                    object ds = this.DataSource.Value<string, object>(KeyName);
+                    List<Dictionary<string, object>> listSource = ds as List<Dictionary<string, object>>;
+                    if (!listSource.IsNullOrEmpty())
+                    {
+                        this.WriteTable(RowItem, listSource);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 写入表格
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="listSource"></param>
+        private void WriteTable(TableEntity entity, List<Dictionary<string, object>> listSource)
+        {
+            int RowCount = 0; //行数
+            int ColCount = 0;
+            if (entity.Head != null)
+            {
+                RowCount += 1;
+            }
+            if (!listSource.IsNullOrEmpty())
+            {
+                RowCount += listSource.Count();
+            }
+            if (!entity.ListTR.IsNullOrEmpty())
+            {
+                ColCount = entity.ListTR[0].ListTD.Count();
+            }
+            this.CurrentHeight += entity.Top; //当前画布的高度，要保留这个高度用于写入内容
+
+            float TabHeight = 0;
+            //画表格的横线
+            if (true)
+            {
+                float TabCurrentHeight = 0;
+                TabCurrentHeight = this.CurrentHeight;
+
+                float StartX = entity.Left;
+                float EndX = entity.Left + entity.Width;
+                float StartY = TabCurrentHeight;
+                float EndY = TabCurrentHeight;
+                g.DrawLine(new Pen(bru), StartX, StartY, EndX, EndY);
+
+                if (entity.Head != null)
+                {
+                    TabCurrentHeight = TabCurrentHeight + entity.Head.Height;
+                    StartY = TabCurrentHeight;
+                    EndY = TabCurrentHeight;
+                    g.DrawLine(new Pen(bru), StartX, StartY, EndX, EndY);
+                }
+
+                if (!listSource.IsNullOrEmpty())
+                {
+                    TrEntity trEntity = entity.ListTR[0];
+                    foreach(Dictionary<string, object> item in listSource)
+                    {
+                        TabCurrentHeight = TabCurrentHeight + trEntity.Height;
+                        StartY = TabCurrentHeight;
+                        EndY = TabCurrentHeight;
+                        g.DrawLine(new Pen(bru), StartX, StartY, EndX, EndY);
+                    }
+                }
+                TabHeight = TabCurrentHeight - this.CurrentHeight;
+            }
+
+            if (true)
+            {
+                float StartX = entity.Left;
+                float EndX = entity.Left;
+                float StartY = this.CurrentHeight;
+                float EndY = this.CurrentHeight + TabHeight;
+                g.DrawLine(new Pen(bru), StartX, StartY, EndX, EndY);
+
+                if (!listSource.IsNullOrEmpty())
+                {
+                    TrEntity trEntity = entity.ListTR[0];
+                    foreach (TdEntity td in trEntity.ListTD)
+                    {
+                        StartX = StartX + td.Width;
+                        EndX = EndX + td.Width;
+                        g.DrawLine(new Pen(bru), StartX, StartY, EndX, EndY);
+                    }
+                }
+            }
+
+            if (true)
+            {
+                if (entity.Head != null && !entity.Head.ListTD.IsNullOrEmpty())
+                {
+                    Dictionary<string, object> dicSource = new Dictionary<string, object>();
+                    entity.Head.ListTD.ForEach(item => { this.WriteTd(item, dicSource); });
+                    this.CurrentHeight += entity.Head.Height;
+                }
+            }
+
+            if (true)
+            {
+                if (!listSource.IsNullOrEmpty() && !entity.ListTR.IsNullOrEmpty())
+                {
+                    TrEntity trEntity = entity.ListTR[0];
+                    float TrHeight = trEntity.Height;
+                    foreach (Dictionary<string, object> dicSource in listSource)
+                    {
+                        trEntity.ListTD.ForEach(item => { this.WriteTd(item, dicSource); });
+                        this.CurrentHeight += TrHeight;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 写入表格信息
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="dicSource"></param>
+        private void WriteTd(TdEntity entity, Dictionary<string, object> dicSource)
+        {
+            if (!entity.ListContent.IsNullOrEmpty())
+            {
+                foreach (ContentEntity item in entity.ListContent)
+                {
+                    if (item is StrLineEntity)
+                    {
+                        StrLineEntity Content = item as StrLineEntity;
+                        this.WriteLine(Content);
+                    }
+                    else if (item is TextEntity)
+                    {
+                        TextEntity Content = item as TextEntity;
+                        this.WriteText(Content, dicSource);
+                    }
+                    else if (item is ImageEntity)
+                    {
+                        ImageEntity Content = item as ImageEntity;
+                        this.WriteImage(Content, dicSource);
+                    }
+                    else if (item is QRCodeEntity)
+                    {
+                        QRCodeEntity Content = item as QRCodeEntity;
+                        this.WriteQRCode(Content, dicSource);
+                    }
+                    else if (item is BarCodeEntity)
+                    {
+                        BarCodeEntity Content = item as BarCodeEntity;
+                        this.WriteBarCode(Content, dicSource);
                     }
                 }
             }

@@ -39,6 +39,24 @@ namespace Git.Framework.Printer.Pager
         /// </summary>
         public float Width { get; set; }
 
+        /// <summary>
+        /// 左边距
+        /// </summary>
+        public float Left { get; set; }
+
+        /// <summary>
+        /// 顶边距
+        /// </summary>
+        public float Top { get; set; }
+
+        /// <summary>
+        /// 表头
+        /// </summary>
+        public THeadEntity Head { get; set; }
+
+        /// <summary>
+        /// 数据行
+        /// </summary>
         public List<TrEntity> ListTR { get; set; }
     }
 }
