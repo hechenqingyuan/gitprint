@@ -31,5 +31,7 @@ namespace Git.Framework.Printer.Pager
         public float Width { get; set; }
 
         public float Height { get; set; }
+
+        public int BarCodeFormat { get; set; }
     }
 }

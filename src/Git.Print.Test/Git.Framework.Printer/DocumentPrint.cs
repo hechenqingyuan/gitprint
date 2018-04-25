@@ -551,7 +551,11 @@ namespace Git.Framework.Printer
             qrEncoder.TryEncode(content, out qrCode);
             using (MemoryStream ms = new MemoryStream())
             {
-                GraphicsRenderer renderer = new GraphicsRenderer(new FixedModuleSize(2, QuietZoneModules.Two));
+                if (entity.ModuleSize <= 0 || entity.ModuleSize > 5)
+                {
+                    entity.ModuleSize = 3;
+                }
+                GraphicsRenderer renderer = new GraphicsRenderer(new FixedModuleSize(entity.ModuleSize, QuietZoneModules.Two));
                 renderer.WriteToStream(qrCode.Matrix, ImageFormat.Jpeg, ms);
                 Image image = Image.FromStream(ms);
                 g.DrawImage(image, new PointF(entity.Left, CurrentTop));
@@ -588,7 +592,7 @@ namespace Git.Framework.Printer
                 Height = (int)Math.Ceiling(entity.Height),
             };
             BarcodeWriter writer = new BarcodeWriter();
-            writer.Format = BarcodeFormat.CODE_128;
+            writer.Format = BarCodeOption.GetBarcodeFormat(entity.BarCodeFormat);
             writer.Options = options;
             Bitmap bitmap = writer.Write(content);
             g.DrawImage(bitmap, new PointF(entity.Left, CurrentTop));

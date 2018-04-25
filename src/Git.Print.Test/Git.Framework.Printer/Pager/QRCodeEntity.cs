@@ -27,5 +27,7 @@ namespace Git.Framework.Printer.Pager
         public float Left { get; set; }
 
         public float Top { get; set; }
+
+        public int ModuleSize { get; set; }
     }
 }

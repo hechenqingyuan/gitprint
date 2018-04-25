@@ -348,6 +348,8 @@ namespace Git.Framework.Printer
 
             float Left = Node.Value<float>("Left");
             float Top = Node.Value<float>("Top");
+            int ModuleSize = Node.Value<int>("ModuleSize");
+
             string Content = Node.Value;
 
             if (Content.Contains("{{") && Content.Contains("}}"))
@@ -361,6 +363,7 @@ namespace Git.Framework.Printer
             Result.Content = Content;
             Result.Left = Left;
             Result.Top = Top;
+            Result.ModuleSize = ModuleSize;
 
             return Result;
         }
@@ -378,6 +381,8 @@ namespace Git.Framework.Printer
             float Top = Node.Value<float>("Top");
             float Width = Node.Value<float>("Width");
             float Height = Node.Value<float>("Height");
+            int BarCodeFormat = Node.Value<int>("BarCodeFormat");
+
             string Content = Node.Value;
 
             if (Content.Contains("{{") && Content.Contains("}}"))
@@ -393,6 +398,7 @@ namespace Git.Framework.Printer
             Result.Top = Top;
             Result.Width = Width;
             Result.Height = Height;
+            Result.BarCodeFormat = BarCodeFormat;
 
             return Result;
         }
