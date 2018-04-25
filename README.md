@@ -41,3 +41,16 @@ http://yun.gitwms.com/
 
 <img src="http://yun.gitwms.com/Weixin.jpg" width="350" height="500" alt=""/>
 <img src="http://yun.gitwms.com/Alipay.jpg" width="350" height="500" alt=""/>
+
+
+## 更新日志
+--- 2018-04-24
+1 解析模板重新开发,引入,git.frmaework框架相关的组件
+
+2 对于截取字符串做了处理
+
+3 目前不知ZPL语言的,但是代码中保留了ZPL语言的指令
+
+-- 2018-04-25
+
+添加对表格的打印支持
