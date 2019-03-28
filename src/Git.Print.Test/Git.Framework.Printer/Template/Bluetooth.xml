@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page Width="200" Heigth="200" DefaultPrinter="COM5" AutoHeight="true">
+  <Line Height="100">
+    <QRCode Left="30" Top="2" ModuleSize="5">{{OrderCode}}</QRCode>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8">单据号:{{OrderCode}}</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="2" FontSize="8" FontStyle="1">提货日期:{{DtReceive}}</Text>
+  </Line>
+  <Line Height="70">
+    <BarCode Left="20" Top="2" Width="100" Height="60">{{OrderCode}}</BarCode>
+  </Line>
+  <Line Height="20">
+    <Text Left="2" Top="2" FontSize="12">--------------------------</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="5" FontSize="7">谢谢惠顾,欢迎再次光临</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="5" FontSize="7">提货凭据，请妥善保管</Text>
+  </Line>
+  <Line Height="20">
+    <Text Left="6" Top="5" FontSize="7">客服热线:4001051212</Text>
+  </Line>
+</Page>

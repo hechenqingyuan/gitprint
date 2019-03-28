@@ -1,0 +1,7 @@
+F:\项目管理\吉特小票打印组件\SRC\gitprint\src\Git.Print.Test\Git.Framework.BluteBooth.Test\bin\Debug\Git.Framework.BluteBooth.Test.exe
+F:\项目管理\吉特小票打印组件\SRC\gitprint\src\Git.Print.Test\Git.Framework.BluteBooth.Test\bin\Debug\Git.Framework.BluteBooth.Test.pdb
+F:\项目管理\吉特小票打印组件\SRC\gitprint\src\Git.Print.Test\Git.Framework.BluteBooth.Test\obj\Debug\Git.Framework.BluteBooth.Test.Form1.resources
+F:\项目管理\吉特小票打印组件\SRC\gitprint\src\Git.Print.Test\Git.Framework.BluteBooth.Test\obj\Debug\Git.Framework.BluteBooth.Test.Properties.Resources.resources
+F:\项目管理\吉特小票打印组件\SRC\gitprint\src\Git.Print.Test\Git.Framework.BluteBooth.Test\obj\Debug\Git.Framework.Bluetooth.Test.csproj.GenerateResource.Cache
+F:\项目管理\吉特小票打印组件\SRC\gitprint\src\Git.Print.Test\Git.Framework.BluteBooth.Test\obj\Debug\Git.Framework.BluteBooth.Test.exe
+F:\项目管理\吉特小票打印组件\SRC\gitprint\src\Git.Print.Test\Git.Framework.BluteBooth.Test\obj\Debug\Git.Framework.BluteBooth.Test.pdb
