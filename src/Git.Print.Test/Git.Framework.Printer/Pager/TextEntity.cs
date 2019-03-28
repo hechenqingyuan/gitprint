@@ -53,5 +53,10 @@ namespace Git.Framework.Printer.Pager
         /// 结束位置
         /// </summary>
         public int End { get; set; }
+
+        /// <summary>
+        /// 字体样式
+        /// </summary>
+        public int FontStyle { get; set; }
     }
 }

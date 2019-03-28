@@ -130,7 +130,11 @@ namespace Git.Framework.Printer
                     this.Page.Heigth = PageHeight;
                 }
             }
-            this.PrintDoc.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize(string.Format("{0}*{1}", this.Page.Width, this.Page.Heigth), (int)Math.Ceiling(this.Page.Width), (int)Math.Ceiling(this.Page.Heigth));
+            //this.PrintDoc.DefaultPageSettings.PaperSize.Kind = PaperKind.Custom;
+            //this.PrintDoc.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize(string.Format("{0}*{1}", this.Page.Width, this.Page.Heigth), (int)Math.Ceiling(this.Page.Width), (int)Math.Ceiling(this.Page.Heigth));
+
+            this.PrintDoc.DefaultPageSettings.PaperSize = new System.Drawing.Printing.PaperSize("Custom", (int)Math.Ceiling(this.Page.Width), (int)Math.Ceiling(this.Page.Heigth));
+
             this.PrintDoc.PrinterSettings.PrinterName = this.Page.DefaultPrinter;
 
             return this;
@@ -459,10 +463,13 @@ namespace Git.Framework.Printer
         private void WriteText(TextEntity entity, Dictionary<string, object> dicSource)
         {
             float CurrentTop = entity.Top + this.CurrentHeight;
+
+            
             if (entity.ContentType == 1)
             {
                 string Value = entity.Content;
-                this.g.DrawString(Value, new Font(entity.FontName, entity.FontSize, FontStyle.Regular), bru, new PointF(entity.Left, CurrentTop));
+                FontStyle style = FontStyleOption.GetFontStyleFormat(entity.FontStyle);
+                this.g.DrawString(Value, new Font(entity.FontName, entity.FontSize, style), bru, new PointF(entity.Left, CurrentTop));
             }
             else if (entity.ContentType == 2)
             {
@@ -475,7 +482,10 @@ namespace Git.Framework.Printer
                 {
                     Value = Value.SubStr(entity.Start, entity.End);
                 }
-                this.g.DrawString(content.Replace("{{" + key + "}}", Value), new Font(entity.FontName, entity.FontSize, FontStyle.Regular), bru, new PointF(entity.Left, CurrentTop));
+
+                FontStyle style = FontStyleOption.GetFontStyleFormat(entity.FontStyle);
+
+                this.g.DrawString(content.Replace("{{" + key + "}}", Value), new Font(entity.FontName, entity.FontSize, style), bru, new PointF(entity.Left, CurrentTop));
             }
         }
 

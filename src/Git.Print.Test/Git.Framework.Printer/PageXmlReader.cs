@@ -261,6 +261,7 @@ namespace Git.Framework.Printer
             string FontName = Node.Value("FontName");
             int Start = Node.Value<int>("Start");
             int End = Node.Value<int>("End");
+            int FontStyle = Node.Value<int>("FontStyle");
 
             string Content = Node.Value;
             if (Content.Contains("{{") && Content.Contains("}}"))
@@ -278,6 +279,7 @@ namespace Git.Framework.Printer
             Result.FontName = FontName;
             Result.Start = Start;
             Result.End = End;
+            Result.FontStyle = FontStyle;
 
             return Result;
         }
