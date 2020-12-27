@@ -62,7 +62,8 @@ namespace Git.Framework.Printer
         /// <param name="filePath"></param>
         /// <param name="printName"></param>
         /// <param name="dataSource"></param>
-        public DocumentPrint(string filePath, string printName,Dictionary<string, object> dataSource)
+        /// <param name="LandScope">是否翻转打印</param>
+        public DocumentPrint(string filePath, string printName,Dictionary<string, object> dataSource,bool LandScope=false)
         {
             PageXmlReader Reader = new PageXmlReader(filePath);
             this.Page=Reader.Read();
@@ -70,6 +71,7 @@ namespace Git.Framework.Printer
             {
                 this.Page.DefaultPrinter = printName;
             }
+            this.Page.LandScope = LandScope;
             this.DataSource = dataSource;
         }
 
@@ -81,7 +83,7 @@ namespace Git.Framework.Printer
         {
             this.PrintDoc= new PrintDocument();
             this.PrintDoc.PrintPage += PrintDocument_PrintPage;
-
+            this.PrintDoc.DefaultPageSettings.Landscape = this.Page.LandScope;
             float PageHeight = 0;
             if (this.Page.AutoHeight)
             {
@@ -453,7 +455,14 @@ namespace Git.Framework.Printer
         /// </summary>
         private void WriteLine(StrLineEntity entity)
         {
-            g.DrawLine(new Pen(bru), entity.StartX, entity.StartY, entity.EndX, entity.EndY);
+            if (entity.PenWidth > 0)
+            {
+                g.DrawLine(new Pen(bru,entity.PenWidth), entity.StartX, entity.StartY, entity.EndX, entity.EndY);
+            }
+            else
+            {
+                g.DrawLine(new Pen(bru), entity.StartX, entity.StartY, entity.EndX, entity.EndY);
+            }
         }
 
         /// <summary>
@@ -484,7 +493,7 @@ namespace Git.Framework.Printer
                 }
 
                 FontStyle style = FontStyleOption.GetFontStyleFormat(entity.FontStyle);
-
+                
                 this.g.DrawString(content.Replace("{{" + key + "}}", Value), new Font(entity.FontName, entity.FontSize, style), bru, new PointF(entity.Left, CurrentTop));
             }
         }
@@ -568,7 +577,17 @@ namespace Git.Framework.Printer
                 GraphicsRenderer renderer = new GraphicsRenderer(new FixedModuleSize(entity.ModuleSize, QuietZoneModules.Two));
                 renderer.WriteToStream(qrCode.Matrix, ImageFormat.Jpeg, ms);
                 Image image = Image.FromStream(ms);
-                g.DrawImage(image, new PointF(entity.Left, CurrentTop));
+                //g.DrawImage(image, new PointF(entity.Left, CurrentTop));
+
+                if (entity.Width == 0 || entity.Height == 0)
+                {
+                    g.DrawImage(image, entity.Left, CurrentTop);
+                }
+                else
+                {
+                    g.DrawImage(image, entity.Left, CurrentTop, entity.Width, entity.Height);
+                }
+                
             }
         }
 

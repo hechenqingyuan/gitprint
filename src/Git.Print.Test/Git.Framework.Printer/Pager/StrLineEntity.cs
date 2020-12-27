@@ -34,5 +34,7 @@ namespace Git.Framework.Printer.Pager
         public float EndX { get; set; }
 
         public float EndY { get; set; }
+
+        public float PenWidth { get; set; }
     }
 }

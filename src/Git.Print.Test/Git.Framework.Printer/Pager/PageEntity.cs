@@ -44,6 +44,11 @@ namespace Git.Framework.Printer.Pager
         /// </summary>
         public bool AutoHeight { get; set; }
 
+        /// <summary>
+        /// 是否翻转横向打印
+        /// </summary>
+        public bool LandScope { get; set; }
+
         public List<RowEntity> Rows { get; set; }
     }
 }

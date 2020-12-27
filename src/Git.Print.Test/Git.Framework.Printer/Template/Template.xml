@@ -12,7 +12,7 @@
     <Image Left="10" Top="1" Width="180" Heigth="38">{{Logo}}</Image>
   </Line>
   <Line Height="100">
-    <QRCode Left="30" Top="2" ModuleSize="5">{{OrderCode}}</QRCode>
+    <QRCode Left="30" Top="2" ModuleSize="5" Width="50" Height="50">{{OrderCode}}</QRCode>
   </Line>
   <Line Height="20">
     <Text Left="6" Top="2" FontSize="8">单据号:{{OrderCode}}</Text>

@@ -297,12 +297,14 @@ namespace Git.Framework.Printer
             float StartY = Node.Value<float>("StartY");
             float EndX = Node.Value<float>("EndX");
             float EndY = Node.Value<float>("EndY");
-            
+            float PenWidth = Node.Value<float>("PenWidth");
+
             Result.ContentType = 1;
             Result.StartX = StartX;
             Result.StartY = StartY;
             Result.EndX = EndX;
             Result.EndY = EndY;
+            Result.PenWidth = PenWidth;
 
             return Result;
         }
@@ -351,6 +353,8 @@ namespace Git.Framework.Printer
             float Left = Node.Value<float>("Left");
             float Top = Node.Value<float>("Top");
             int ModuleSize = Node.Value<int>("ModuleSize");
+            float Width = Node.Value<float>("Width");
+            float Height = Node.Value<float>("Height");
 
             string Content = Node.Value;
 
@@ -365,6 +369,8 @@ namespace Git.Framework.Printer
             Result.Content = Content;
             Result.Left = Left;
             Result.Top = Top;
+            Result.Width = Width;
+            Result.Height = Height;
             Result.ModuleSize = ModuleSize;
 
             return Result;

@@ -1,9 +1,13 @@
 ﻿
+using Gma.QrCodeNet.Encoding;
+using Gma.QrCodeNet.Encoding.Windows.Render;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -135,6 +139,40 @@ namespace Git.Framework.Printer.Test
             //result = cpcl_dll.CPCL_Print(dll.printer);
             //result = cpcl_dll.PortClose(dll.printer);
             //result = cpcl_dll.PrinterDestroy(dll.printer);
+        }
+
+        /// <summary>
+        /// 生成二维码图片
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            List<string> list = new List<string>()
+            {
+                "TK101","TK102","TK103","TK104",
+
+                "TK201","TK202","TK203","TK204","TK205","TK206","TK207","TK208","TK209","TK210","TK211","TK212","TK213","TK214",
+
+                "TK301","TK302","TK303","TK304",
+
+                "TK401","TK402","TK403","TK404","TK405","TK406","TK407","TK408","TK409","TK410","TK411","TK412","TK413","TK414",
+            };
+            foreach (string str in list)
+            {
+                string Content = str;
+                QrEncoder qrEncoder = new QrEncoder(ErrorCorrectionLevel.H);
+                QrCode qrCode = new QrCode();
+                qrEncoder.TryEncode(Content, out qrCode);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    GraphicsRenderer renderer = new GraphicsRenderer(new FixedModuleSize(18, QuietZoneModules.Two), Brushes.White, Brushes.MidnightBlue);
+                    
+                    renderer.WriteToStream(qrCode.Matrix, ImageFormat.Jpeg, ms);
+                    Image image = Image.FromStream(ms);
+                    image.Save(str+".jpg");
+                }
+            }
         }
     }
 
